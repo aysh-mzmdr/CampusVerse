@@ -1,0 +1,58 @@
+body{
+    background-color: black;
+    overflow-x: hidden;
+    margin:0px;
+    padding: 0px;
+}
+
+.head{
+    background-image: linear-gradient(green,rgba(0, 128, 0, 0));
+    height:100vh;
+    width:100vw;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    color:white;
+}
+
+.about{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+    width:100vw;
+}
+
+
+.footer{
+    background-color: rgb(24, 24, 24);
+    width:100vw;
+    height:40vh;
+}
+
+.navbar{
+    background-image: linear-gradient(to left,green,rgba(0, 128, 0, 0));
+    position:fixed;
+    display:flex;
+    align-items: end;
+    justify-content: end;
+    width:99vw;
+    padding-right: 2em;
+}
+
+button{
+    background-color: white;
+    border: none;
+    font-size: 1.5em;
+    padding: 1em;
+    padding-inline: 1.8em;
+    cursor: pointer;
+    transition: background-color 0.5s , color 0.5s;
+}
+
+button:hover{
+    background-color: green;
+    color: white;
+}
