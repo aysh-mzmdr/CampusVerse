@@ -1,6 +1,10 @@
 body{
-    background-color: black;
+    margin:0px;
     overflow-x: hidden;
+}
+
+.home{
+    background-color: black;
     margin:0px;
     padding: 0px;
 }
@@ -27,13 +31,14 @@ body{
 
 
 .footer{
-    background-color: rgb(24, 24, 24);
+    color: white;
+    background-image: linear-gradient(black,rgb(24, 24, 24));
     width:100vw;
     height:40vh;
 }
 
 .navbar{
-    background-image: linear-gradient(to left,green,rgba(0, 128, 0, 0));
+    background-color: rgba(0, 128, 0, 0);
     position:fixed;
     display:flex;
     align-items: end;
@@ -42,9 +47,10 @@ body{
     padding-right: 2em;
 }
 
-button{
-    background-color: white;
+.navButton{
+    background-color: rgba(0, 128, 0, 0);
     border: none;
+    color:white;
     font-size: 1.5em;
     padding: 1em;
     padding-inline: 1.8em;
@@ -52,7 +58,7 @@ button{
     transition: background-color 0.5s , color 0.5s;
 }
 
-button:hover{
-    background-color: green;
-    color: white;
+.navButton:hover{
+    background-color: white;
+    color: black;
 }
