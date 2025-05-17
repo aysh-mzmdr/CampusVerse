@@ -1,0 +1,25 @@
+.profile_section{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height:auto;
+}
+
+.profile_button{
+    font-size: 1.5em;
+    padding-inline: 1.5em;
+    padding-block: 0.7em;
+    margin-inline: 4em;
+    margin-block: 1.5em;
+    border-radius: 15px;
+    border: 1px solid green;
+    background-color: rgb(45, 221, 45);
+    color:black;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.profile_button:hover{
+    color:white;
+    background-color: green;
+}

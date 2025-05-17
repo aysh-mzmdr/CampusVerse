@@ -1,10 +1,10 @@
 body{
     margin:0px;
     overflow-x: hidden;
+    background-color: black;
 }
 
 .home{
-    background-color: black;
     margin:0px;
     padding: 0px;
 }

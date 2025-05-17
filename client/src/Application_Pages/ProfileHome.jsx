@@ -24,6 +24,7 @@ function ProfileHome(){
                 <button onClick={toGames} className={styles.profile_button}>Games</button>
                 <button onClick={toHelpSquare} className={styles.profile_button}>HelpSquare</button>
                 <button onClick={toBlog} className={styles.profile_button}>Blog</button>
+                <button className={styles.profile_button}>Logout</button>          
             </div>
             <div className={styles.profile_footers}>
 
