@@ -5,6 +5,7 @@ import passport from "passport";
 import bcrypt,{ genSaltSync } from "bcrypt";
 import pool from "../db/database.mjs"
 import session from "express-session";
+import "./strategies.mjs"
 
 dotenv.config({path:"../.env"})
 const CLIENT_PORT=process.env.CLIENT_PORT;
