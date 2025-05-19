@@ -1,5 +1,12 @@
 import styles from "./Home.module.css"
 import { useNavigate } from "react-router-dom";
+import Card from "./Card.jsx"
+import Aura from "../assets/Aura.png"
+import Friend from "../assets/Friend.png"
+import News from "../assets/News.png"
+import Microblog from "../assets/Microblog.png"
+import Help from "../assets/Help.png"
+import Game from "../assets/Game.png"
 
 function Home(){
 
@@ -18,13 +25,18 @@ function Home(){
                 <h5>Connecting You with Your people</h5>
             </div>
             <div className={styles.about}>
-                <h1>What we offer</h1>
+                <h1 className={styles.title}>What we offer</h1>
                 <div className={styles.offers}>
-
+                    <Card image={Friend} info="A place where students can connect with others of their own institute who share their interests "/>
+                    <Card image={Game} info="A place to play and compete with your colleagues for the leaderboards"/>
+                    <Card image={Help} info="A place for students to find someone who could help them to solve their problem"/>
+                    <Card image={News} info="A place where students can stay updated with campus events, announcements, and activities, reducing reliance on scattered sources of information."/>
+                    <Card image={Aura} info="A place where students are known for their goodness"/>
+                    <Card image={Microblog} info="A place where students of an institution can share thoughts, updates, and opinion"/>
                 </div>
             </div>
             <div className={styles.footer}>
-                <h1>idk</h1>
+                <p style={{fontFamily:"monospace",fontSize:"1.5em"}}>Created by aysh_mzmdr</p>
             </div>
         </div>
     )

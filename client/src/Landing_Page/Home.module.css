@@ -23,18 +23,23 @@ body{
 
 .about{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height:100vh;
+    flex-direction: column;
+    height:fit-content;
     width:100vw;
+    color: white;
 }
 
 
 .footer{
+    display: flex;
+    justify-content: center;
+    align-items: end;
     color: white;
-    background-image: linear-gradient(black,rgb(24, 24, 24));
+    background-image: linear-gradient(black,rgb(9 33 9));
+    /*background-color: rgb(9 33 9);*/
     width:100vw;
-    height:40vh;
+    height:30vh;
+    
 }
 
 .navbar{
@@ -50,10 +55,12 @@ body{
 .navButton{
     background-color: rgba(0, 128, 0, 0);
     border: none;
+    border-radius: 50px;
     color:white;
     font-size: 1.5em;
-    padding: 1em;
-    padding-inline: 1.8em;
+    margin-inline: 0.5em;
+    padding-block: 0.9em;
+    padding-inline: 1.7em;
     cursor: pointer;
     transition: background-color 0.5s , color 0.5s;
 }
@@ -61,4 +68,64 @@ body{
 .navButton:hover{
     background-color: white;
     color: black;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.offers{
+    display: flex;
+    flex-direction: row;
+    column-gap: 5em;
+    row-gap: 0px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardImage{
+    width:200px;
+    height:auto;
+    background-color: white;
+    padding: 10px;
+}
+
+.card{
+    padding: 10px;
+    width:500px;
+    height:500px;
+    
+    text-align: center;
+}
+
+.cardInfo{
+    font-family: Verdana, sans-serif;
+    font-size: 1.2em;
+    line-height: 1.8em;
+}
+
+.title{
+    font-size: 3em;
+    position: relative;
+}
+
+.title::after{
+    position: absolute;
+    content: " ";
+    width:100px;
+    height:10%;
+    top:50%;
+    left:50%;
+    translate: -130% 600%;
+    background-color:white;
+    transition: translate 0.5s,width 0.5s,height 0.5s;
+}
+
+.title:hover::after{
+    width:200px;
+    translate: -50% 600%;
 }
