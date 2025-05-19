@@ -32,14 +32,14 @@ function Login(){
 
     return(
         <div className={styles.auth}>
-            <h1>Login</h1>
+            <h1 className={styles.title}>Login</h1>
             <form className={styles.loginBox} onSubmit={loginHandle}>
-                <label>Roll Number : <input value={roll} type="text" onChange={(e) => setRoll(e.target.value)} placeholder="Roll Number"/></label>
-                <label>Institute : <select value={institute} onChange={(e) => setInstitute(e.target.value)} required>
+                <div className={styles.entry}><label>Roll Number :    </label><input value={roll} type="text" onChange={(e) => setRoll(e.target.value)} placeholder="Roll Number" required/></div>
+                <div className={styles.entry}><label>Institute :      </label><select value={institute} onChange={(e) => setInstitute(e.target.value)} required>
                     <option value="" disabled>Select Institute</option>
                     <option value="BIT Sindri">BIT Sindri</option>
-                </select></label>
-                <label>Password : <input value={password} type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password"/></label>
+                </select></div>
+                <div className={styles.entry}><label>Password :   </label><input value={password} type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required/></div>
                 <button type="submit" className={styles.authButton}>Login</button>
             </form>
         </div>

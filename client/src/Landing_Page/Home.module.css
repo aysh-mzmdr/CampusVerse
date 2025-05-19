@@ -10,14 +10,16 @@ body{
 }
 
 .head{
+    font-family: Helvetica, sans-serif;
     background-image: linear-gradient(green,rgba(0, 128, 0, 0));
     height:100vh;
     width:100vw;
     display:flex;
     flex-direction: column;
+    text-shadow: 0px 0px 3px white,0px 0px 10px black;
     justify-content: center;
     align-items: center;
-    font-size: 3em;
+    font-size: 2.7em;
     color:white;
 }
 
@@ -61,13 +63,14 @@ body{
     margin-inline: 0.5em;
     padding-block: 0.9em;
     padding-inline: 1.7em;
+    font-weight: 600;
     cursor: pointer;
     transition: background-color 0.5s , color 0.5s;
 }
 
 .navButton:hover{
     background-color: white;
-    color: black;
+    color: green;
 }
 
 .card{
@@ -92,6 +95,8 @@ body{
     height:auto;
     background-color: white;
     padding: 10px;
+    transition: box-shadow 0.5s;
+    margin-bottom: 1em;
 }
 
 .card{
@@ -108,12 +113,13 @@ body{
     line-height: 1.8em;
 }
 
-.title{
+.whatweoffer{
     font-size: 3em;
     position: relative;
+    text-align: center;
 }
 
-.title::after{
+.whatweoffer::after{
     position: absolute;
     content: " ";
     width:100px;
@@ -125,7 +131,11 @@ body{
     transition: translate 0.5s,width 0.5s,height 0.5s;
 }
 
-.title:hover::after{
+.whatweoffer:hover::after{
     width:200px;
     translate: -50% 600%;
+}
+
+.card:hover .cardImage{
+    box-shadow: 0px 0px 50px white;
 }

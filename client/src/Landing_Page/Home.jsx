@@ -7,25 +7,31 @@ import News from "../assets/News.png"
 import Microblog from "../assets/Microblog.png"
 import Help from "../assets/Help.png"
 import Game from "../assets/Game.png"
+import { useRef } from "react";
 
 function Home(){
-
+    const aboutRef = useRef()
     const navigate=useNavigate()
     const toLogin = () => {navigate("/login")}
     const toRegister = () => {navigate("/register")}
+
+    const toAbout=()=>{
+        aboutRef.current?.scrollIntoView({behavior:"smooth"})
+    }
+
     return(
         <div className={styles.home}>
             <div className={styles.navbar}>
                 <button className={styles.navButton} onClick={toLogin}>Login</button>
-                <button className={styles.navButton}>About Us</button>
+                <button className={styles.navButton} onClick={toAbout}>About Us</button>
                 <button className={styles.navButton} onClick={toRegister}>Register</button>
             </div>
             <div className={styles.head}>
                 <h1>CampusVerse</h1>
                 <h5>Connecting You with Your people</h5>
             </div>
-            <div className={styles.about}>
-                <h1 className={styles.title}>What we offer</h1>
+            <div ref={aboutRef} className={styles.about}>
+                <h1 className={styles.whatweoffer}>What we offer</h1>
                 <div className={styles.offers}>
                     <Card image={Friend} info="A place where students can connect with others of their own institute who share their interests "/>
                     <Card image={Game} info="A place to play and compete with your colleagues for the leaderboards"/>
