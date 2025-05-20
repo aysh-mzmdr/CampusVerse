@@ -2,6 +2,7 @@ import Home from "./Landing_Page/Home.jsx"
 import Login from "./Landing_Page/Login.jsx"
 import Register from "./Landing_Page/Register.jsx"
 import ProfileHome from "./Application_Pages/ProfileHome.jsx"
+import Verification from "./Landing_Page/Verification.jsx"
 import Profile from "./Application_Pages/Profile.jsx"
 import Games from "./Application_Pages/Games.jsx"
 import Friends from "./Application_Pages/Friends.jsx"
@@ -20,6 +21,7 @@ function App(){
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/profilehome" element={<ProfileHome/>}/>
+          <Route path="/verification" element={<Verification/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/games" element={<Games/>}/>
           <Route path="/friends" element={<Friends/>}/>

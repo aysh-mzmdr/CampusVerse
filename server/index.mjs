@@ -31,7 +31,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.post("/auth/login", passport.authenticate("local"),(request,response) => {
-    return response.sendStatus(200)
+    const user=request.user;
+    if(user.verified)
+        return response.sendStatus(200);
+    else if(!user.verified)
+        return response.sendStatus(301);
 })
 
 app.post("/auth/logout",(request,response) => {
@@ -59,6 +63,21 @@ app.post("/auth/signup",async (request,response) => {
         await pool.query("INSERT INTO users VALUES (DEFAULT,$1,$2,$3)",[roll,hashedPassword,institute])
         return response.sendStatus(200)
     }    
+    catch(err){
+        console.log(err)
+        return response.sendStatus(500)
+    }
+})
+
+app.post("/auth/verify",async(request,response)=>{
+    const {name,password,branch,batch} = request.body
+    const salt=genSaltSync(10)
+    const hashedPassword=bcrypt.hashSync(password,salt)
+    try{
+        await pool.query("UPDATE users SET name=$1,password=$2,branch=$3,batch=$4 WHERE id=$5",[name,hashedPassword,branch,batch,request.user.id])
+        await pool.query("UPDATE users SET verified=$1 WHERE id=$2",[true,request.user.id])
+        return response.sendStatus(200)
+    }
     catch(err){
         console.log(err)
         return response.sendStatus(500)
