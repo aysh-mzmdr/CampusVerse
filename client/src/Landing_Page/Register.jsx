@@ -36,10 +36,8 @@ function Register(){
             <h1 className={styles.title}>Register</h1>
             <form className={styles.loginBox} onSubmit={signupHandle}>
                 <div className={styles.entry}><label>Roll Number :    </label><input value={roll} type="text" onChange={(e) => setRoll(e.target.value)} required/></div>
-                <div className={styles.entry}><label>Institute :      </label><select value={institute} onChange={(e) => setInstitute(e.target.value)} required>
-                    <option value="" disabled>Select Institute</option>
-                    <option value="BIT Sindri">BIT Sindri</option>
-                </select></div>
+                <div className={styles.entry}><label>Designation :    </label><input type="text" required/></div>
+                <div className={styles.entry}><label>Institute :      </label><input value={institute} type="text" onChange={(e) => setInstitute(e.target.value)} required/></div>
                 <div className={styles.entry}><label>Password :   </label><input value={password} type="password" onChange={(e) => setPassword(e.target.value)} required/></div>
                 <button type="submit" className={styles.authButton}>Register</button>
             </form>

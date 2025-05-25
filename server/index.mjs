@@ -88,6 +88,13 @@ app.get("/api/collect",(request,response) =>{
     const user=request.user;
     response.send({user})
 })
+
+app.get("/api/institutions",async (request,response) =>{
+    const institutionsQuery=await pool.query("SELECT DISTINCT institute FROM users")
+    const institutions = institutionsQuery.rows;
+    response.send({institutions})
+})
+
 app.listen(SERVER_PORT)
 
 
