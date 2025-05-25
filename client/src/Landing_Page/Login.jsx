@@ -8,7 +8,6 @@ function Login(){
     const [roll,setRoll] = useState("")
     const [password,setPassword] = useState("")
     const [institute,setInstitute] = useState("")
-
     const [institutions,setInstitutitons]=useState([])
 
     const navigate=useNavigate()
@@ -28,6 +27,10 @@ function Login(){
                 navigate("/profilehome")
             else if(response.status === 301)
                 navigate("/verification")
+            else if(response.status === 201)
+                navigate("/adminhome")
+            else if(response.status === 302)
+                navigate("/unverifiedadmin")
         }
         catch(err){
             console.log(err)

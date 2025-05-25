@@ -1,9 +1,11 @@
+// THIS IS DEMO CODE!!!!!
+
 import { useState } from "react"
-import styles from "./Auth.module.css"
+import styles from "./Profile.module.css"
 import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
-function Register(){
+function CreateProfiles(){
     const [roll,setRoll] = useState("")
     const [password,setPassword] = useState("")
     const [institute,setInstitute] = useState("")
@@ -45,4 +47,4 @@ function Register(){
     )
 }
 
-export default Register
+export default CreateProfiles

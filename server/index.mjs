@@ -32,10 +32,18 @@ app.use(passport.session())
 
 app.post("/auth/login", passport.authenticate("local"),(request,response) => {
     const user=request.user;
-    if(user.verified)
-        return response.sendStatus(200);
-    else if(!user.verified)
-        return response.sendStatus(301);
+    if(user.role==="student"){
+        if(user.verified)
+            return response.sendStatus(200);
+        else if(!user.verified)
+            return response.sendStatus(301);
+    }
+    else if(user.role==="admin"){
+        if(user.verified)
+            return response.sendStatus(201)
+        else if(!user.verified)
+            return response.sendStatus(302)
+    }
 })
 
 app.post("/auth/logout",(request,response) => {
@@ -56,11 +64,11 @@ app.post("/auth/logout",(request,response) => {
 })
 
 app.post("/auth/signup",async (request,response) => {
-    const {roll,password,institute} = request.body
+    const {roll,password,institute,role} = request.body
     const salt=genSaltSync(10)
     const hashedPassword=bcrypt.hashSync(password,salt)
     try{
-        await pool.query("INSERT INTO users VALUES (DEFAULT,$1,$2,$3)",[roll,hashedPassword,institute])
+        await pool.query("INSERT INTO users (id,roll,password,institute,role) VALUES (DEFAULT,$1,$2,$3,$4)",[roll,hashedPassword,institute,role])
         return response.sendStatus(200)
     }    
     catch(err){

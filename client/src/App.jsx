@@ -2,6 +2,9 @@ import Home from "./Landing_Page/Home.jsx"
 import Login from "./Landing_Page/Login.jsx"
 import Register from "./Landing_Page/Register.jsx"
 import ProfileHome from "./Application_Pages/ProfileHome.jsx"
+import AdminHome from "./Application_Pages/AdminHome.jsx"
+import CreateProfiles from "./Application_Pages/CreateProfiles.jsx"
+import UnverifiedAdmin from "./Application_Pages/UnverifiedAdmin.jsx"
 import Verification from "./Landing_Page/Verification.jsx"
 import Profile from "./Application_Pages/Profile.jsx"
 import Games from "./Application_Pages/Games.jsx"
@@ -21,6 +24,9 @@ function App(){
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/profilehome" element={<ProfileHome/>}/>
+          <Route path="/adminhome" element={<AdminHome/>}/>
+          <Route path="/createprofiles" element={<CreateProfiles/>}/>
+          <Route path="/unverifiedadmin" element={<UnverifiedAdmin/>}/>
           <Route path="/verification" element={<Verification/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/games" element={<Games/>}/>
