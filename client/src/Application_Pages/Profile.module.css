@@ -57,3 +57,24 @@
     color:white;
     background-color: rgb(186, 0, 0);
 }
+
+.events{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.profile_footer{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding-bottom: 25px;
+    color: white;
+    font-family: monospace;
+    font-size: 1.5em;
+    background-image:linear-gradient(black,rgb(49,49,49));
+    width:100vw;
+    height:20vh;
+}

@@ -86,7 +86,7 @@ app.post("/auth/verify",async(request,response)=>{
 
 app.get("/api/collect",(request,response) =>{
     const user=request.user;
-    response.send(user)
+    response.send({user})
 })
 app.listen(SERVER_PORT)
 

@@ -1,6 +1,7 @@
 import styles from "./Profile.module.css"
 import { useNavigate } from "react-router-dom"
 import { useState,useEffect } from "react"
+import EventCard from "./EventCard.jsx"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 
@@ -37,8 +38,16 @@ function ProfileHome(){
     return(
         <>
             <h1 style={{color:"white",textAlign:"center",fontFamily:"Georgia",fontSize:"4em",fontWeight:"600"}}>Welcome {user.name}!</h1>
+            <h1 style={{color:"white",textAlign:"center",fontFamily:"Verdana",fontSize:"3.2em",fontWeight:"600"}}>Events</h1>
             <div className={styles.events}>
-
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
+                <EventCard info="Inter House Volleyball tournament" date="25th July"/>
             </div>
             <h1 style={{color:"white",textAlign:"center",fontFamily:"Verdana",fontSize:"3.2em",fontWeight:"600"}}>Activity Building</h1>
             <div className={styles.profile_section}>
@@ -50,8 +59,11 @@ function ProfileHome(){
                 <button onClick={toBlog} className={styles.profile_button}>Blog</button>
                 <button className={styles.logout_button} onClick={logoutHandle}>Logout</button>          
             </div>
-            <div className={styles.profile_footers}>
-
+            <div className={styles.leaderboards}>
+                
+            </div>
+            <div className={styles.profile_footer}>
+                Created by aysh_mzmdr
             </div>
         </>
     )
