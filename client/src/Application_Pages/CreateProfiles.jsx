@@ -1,47 +1,69 @@
-// THIS IS DEMO CODE!!!!!
-
-import { useState } from "react"
-import styles from "./Profile.module.css"
+import { useState,useEffect } from "react"
+import styles from "../Landing_Page/Auth.module.css"
 import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function CreateProfiles(){
-    const [roll,setRoll] = useState("")
-    const [password,setPassword] = useState("")
+    const [start,setStart] = useState("")
+    const [end,setEnd] = useState("")
     const [institute,setInstitute] = useState("")
-    const role="admin";
+
+    const role="student";
     const navigate=useNavigate()
 
-    const signupHandle= async(e) => {
+    const createHandle= async(e) => {
         e.preventDefault()
-        try{
-            const response=await fetch(`http://localhost:${SERVER_PORT}/auth/signup`,{
-                method:"POST",
-                credentials:"include",
-                headers:{
-                    "Content-type":"application/json"
-                },
-                body: JSON.stringify({roll,password,institute,role})
-            })
-            if(response.ok)
-                navigate("/")
-            else
-                throw new Error("Invalid Credentials")
+
+        for(let i=start;i<=end;i++){
+
+            const roll=i;
+            const password=genPassword()
+
+            try{
+                const response=await fetch(`http://localhost:${SERVER_PORT}/auth/signup`,{
+                    method:"POST",
+                    credentials:"include",
+                    headers:{
+                        "Content-type":"application/json"
+                    },
+                    body: JSON.stringify({roll,password,institute,role})
+                })
+                if(response.ok)
+                    navigate("/")
+                else
+                    throw new Error("Invalid Credentials")
+            }
+            catch(err){
+                console.log(err)
+            }
         }
-        catch(err){
-            console.log(err)
+    }
+
+    useEffect(()=>{
+        fetch(`http://localhost:${SERVER_PORT}/api/collect`,{credentials:"include"})
+        .then(response => response.json())
+        .then(value => setInstitute(value.user.institute))
+        .catch(err => console.log(err))
+    },[])
+
+
+
+    const genPassword = () => {
+        const char="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*"
+        let tempPass = "";
+        for(let i=0;i<10;i++){
+            tempPass=tempPass+char[Math.floor(Math.random()*char.length)]
         }
+        return tempPass;
     }
 
     return(
         <div className={styles.auth}>
-            <h1 className={styles.title}>Register</h1>
-            <form className={styles.loginBox} onSubmit={signupHandle}>
-                <div className={styles.entry}><label>Roll Number :    </label><input value={roll} type="text" onChange={(e) => setRoll(e.target.value)} required/></div>
-                <div className={styles.entry}><label>Designation :    </label><input type="text" required/></div>
-                <div className={styles.entry}><label>Institute :      </label><input value={institute} type="text" onChange={(e) => setInstitute(e.target.value)} required/></div>
-                <div className={styles.entry}><label>Password :   </label><input value={password} type="password" onChange={(e) => setPassword(e.target.value)} required/></div>
-                <button type="submit" className={styles.authButton}>Register</button>
+            <h1 className={styles.title}>Create Profiles</h1>
+            <form className={styles.loginBox} onSubmit={createHandle}>
+                <div className={styles.entry}><label>First Roll Number :    </label><input value={start} type="text" onChange={(e) => setStart(e.target.value)} required/></div>
+                <div className={styles.entry}><label>Last Roll Number :    </label><input value={end} type="text" onChange={(e) => setEnd(e.target.value)} required/></div>
+                <button type="submit" className={styles.authButton}>Create Profiles</button>
             </form>
         </div>
     )

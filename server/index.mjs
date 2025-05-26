@@ -67,8 +67,17 @@ app.post("/auth/signup",async (request,response) => {
     const {roll,password,institute,role} = request.body
     const salt=genSaltSync(10)
     const hashedPassword=bcrypt.hashSync(password,salt)
+    if(role==="student"){
+        try{
+            await pool.query("INSERT INTO temp_pass (id,roll,password,institute) VALUES (DEFAULT,$1,$2,$3) ON CONFLICT(roll,institute) DO NOTHING",[roll,password,institute])
+        }    
+        catch(err){
+            console.log(err)
+            return response.sendStatus(500)
+        }
+    }
     try{
-        await pool.query("INSERT INTO users (id,roll,password,institute,role) VALUES (DEFAULT,$1,$2,$3,$4)",[roll,hashedPassword,institute,role])
+        await pool.query("INSERT INTO users (id,roll,password,institute,role) VALUES (DEFAULT,$1,$2,$3,$4) ON CONFLICT(roll,institute) DO NOTHING",[roll,hashedPassword,institute,role])
         return response.sendStatus(200)
     }    
     catch(err){
