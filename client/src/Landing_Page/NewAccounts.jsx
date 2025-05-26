@@ -3,7 +3,7 @@ import styles from "./Auth.module.css"
 import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
-function Login(){
+function NewAccounts(){
 
     const [roll,setRoll] = useState("")
     const [password,setPassword] = useState("")
@@ -11,27 +11,24 @@ function Login(){
     const [institutions,setInstitutitons]=useState([])
 
     const navigate=useNavigate()
-    const toNewAccounts=() => navigate("/newaccounts")
-
-    const loginHandle= async (e) => {
+    const toLogin=() => navigate("/login")
+    const newAccountsHandle= async (e) => {
         e.preventDefault()
         try{
-            const response=await fetch(`http://localhost:${SERVER_PORT}/auth/login`,{
+            const response=await fetch(`http://localhost:${SERVER_PORT}/api/newaccounts`,{
                 method:"POST",
                 credentials:"include",
                 headers:{
                     "Content-type":"application/json"
                 },
-                body: JSON.stringify({roll,institute,password})
+                body: JSON.stringify({roll,institute})
             })
-            if(response.status === 200)
-                navigate("/profilehome")
-            else if(response.status === 301)
-                navigate("/verification")
-            else if(response.status === 201)
-                navigate("/adminhome")
-            else if(response.status === 302)
-                navigate("/unverifiedadmin")
+            if(response.status===404)
+                setPassword("--")
+            else{
+                const data=await response.json();
+                setPassword(data.password)
+            }
         }
         catch(err){
             console.log(err)
@@ -47,9 +44,9 @@ function Login(){
 
     return(
         <div className={styles.auth}>
-            <button className={styles.goButton} onClick={toNewAccounts}>New Account? Know your temporary password here</button>
-            <h1 className={styles.title}>Login</h1>
-            <form className={styles.loginBox} onSubmit={loginHandle}>
+            <button className={styles.goButton} onClick={toLogin}>Go Back</button>
+            <h1 className={styles.title}>New Accounts</h1>
+            <form className={styles.loginBox} onSubmit={newAccountsHandle}>
                 <div className={styles.entry}><label>Roll Number :    </label><input value={roll} type="text" onChange={(e) => setRoll(e.target.value)} required/></div>
                 <div className={styles.entry}><label>Institute :      </label><select value={institute} onChange={(e) => setInstitute(e.target.value)} required>
                     <option value="" disabled>Select Institute</option>
@@ -57,11 +54,11 @@ function Login(){
                         <option key={institute.institute} value={institute.institute}>{institute.institute}</option>
                     ))}
                 </select></div>
-                <div className={styles.entry}><label>Password :   </label><input value={password} type="password" onChange={(e) => setPassword(e.target.value)} required/></div>
-                <button type="submit" className={styles.authButton}>Login</button>
+                <div className={styles.entry}><label>Password :   </label><input value={password} disabled/></div>
+                <button type="submit" className={styles.authButton}>Get Password</button>
             </form>
         </div>
     )
 }
 
-export default Login
+export default NewAccounts

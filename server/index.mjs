@@ -112,6 +112,18 @@ app.get("/api/institutions",async (request,response) =>{
     response.send({institutions})
 })
 
+app.post("/api/newaccounts",async(request,response)=>{
+    const {roll,institute} = request.body;
+    try{
+        const passwordQuery = await pool.query("SELECT password FROM temp_pass WHERE roll=$1 AND institute=$2",[roll,institute])
+        const password=passwordQuery.rows[0].password;
+        response.send({password})
+    }
+    catch(err){
+        response.sendStatus(404)
+    }
+
+})
 app.listen(SERVER_PORT)
 
 

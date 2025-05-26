@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function Register(){
-    const [roll,setRoll] = useState("")
+    const roll=0;
     const [password,setPassword] = useState("")
     const [institute,setInstitute] = useState("")
     const role="admin";
@@ -35,7 +35,7 @@ function Register(){
         <div className={styles.auth}>
             <h1 className={styles.title}>Register</h1>
             <form className={styles.loginBox} onSubmit={signupHandle}>
-                <div className={styles.entry}><label>Roll Number :    </label><input value={roll} type="text" onChange={(e) => setRoll(e.target.value)} required/></div>
+                <div className={styles.entry}><label>Roll Number :    </label><input style={{color:"grey"}}value={roll} type="text" disabled/></div>
                 <div className={styles.entry}><label>Designation :    </label><input type="text" required/></div>
                 <div className={styles.entry}><label>Institute :      </label><input value={institute} type="text" onChange={(e) => setInstitute(e.target.value)} required/></div>
                 <div className={styles.entry}><label>Password :   </label><input value={password} type="password" onChange={(e) => setPassword(e.target.value)} required/></div>

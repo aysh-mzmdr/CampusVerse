@@ -1,6 +1,7 @@
 import Home from "./Landing_Page/Home.jsx"
 import Login from "./Landing_Page/Login.jsx"
 import Register from "./Landing_Page/Register.jsx"
+import NewAccounts from "./Landing_Page/NewAccounts.jsx"
 import ProfileHome from "./Application_Pages/ProfileHome.jsx"
 import AdminHome from "./Application_Pages/AdminHome.jsx"
 import CreateProfiles from "./Application_Pages/CreateProfiles.jsx"
@@ -25,6 +26,7 @@ function App(){
           <Route path="/register" element={<Register/>}/>
           <Route path="/profilehome" element={<ProfileHome/>}/>
           <Route path="/adminhome" element={<AdminHome/>}/>
+          <Route path="/newaccounts" element={<NewAccounts/>}/>
           <Route path="/createprofiles" element={<CreateProfiles/>}/>
           <Route path="/unverifiedadmin" element={<UnverifiedAdmin/>}/>
           <Route path="/verification" element={<Verification/>}/>
