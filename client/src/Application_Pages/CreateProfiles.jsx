@@ -7,6 +7,7 @@ function CreateProfiles(){
     const [start,setStart] = useState("")
     const [end,setEnd] = useState("")
     const [institute,setInstitute] = useState("")
+    const [progress,setProgress]=useState(`Successfully created ${end-start+1} users!`)
 
     const role="student";
     const navigate=useNavigate()
@@ -14,13 +15,15 @@ function CreateProfiles(){
     const createHandle= async(e) => {
         e.preventDefault()
 
+        const requests=[]
+
         for(let i=start;i<=end;i++){
 
             const roll=i;
             const password=genPassword()
 
             try{
-                const response=await fetch(`http://localhost:${SERVER_PORT}/auth/signup`,{
+                const request=await fetch(`http://localhost:${SERVER_PORT}/auth/signup`,{
                     method:"POST",
                     credentials:"include",
                     headers:{
@@ -28,15 +31,24 @@ function CreateProfiles(){
                     },
                     body: JSON.stringify({roll,password,institute,role})
                 })
-                if(response.ok)
-                    navigate("/")
-                else
-                    throw new Error("Invalid Credentials")
+                setProgress(`${i} of ${end} users done........`)
+                requests.push(request);
             }
             catch(err){
                 console.log(err)
             }
         }
+
+        const response=await Promise.all(requests)
+        setProgress(`Successfully created ${end-start+1} users!`)
+        const status=response.every(response => response.ok)
+
+        if(status){
+            setStart("")
+            setEnd("")
+        }
+        else
+            console.log("Some error occured!")
     }
 
     useEffect(()=>{
@@ -59,6 +71,7 @@ function CreateProfiles(){
 
     return(
         <div className={styles.auth}>
+            <h1 className={styles.progress}>{progress}</h1>
             <h1 className={styles.title}>Create Profiles</h1>
             <form className={styles.loginBox} onSubmit={createHandle}>
                 <div className={styles.entry}><label>First Roll Number :    </label><input value={start} type="text" onChange={(e) => setStart(e.target.value)} required/></div>
