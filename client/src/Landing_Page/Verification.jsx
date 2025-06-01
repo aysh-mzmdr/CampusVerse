@@ -9,6 +9,7 @@ function Verification(){
     const [confirmPassword,setConfirmPassword] = useState("")
     const [branch,setBranch] = useState("")
     const [batch,setBatch] = useState("")
+    const [phone,setPhone] = useState("")
 
     const navigate=useNavigate()
 
@@ -22,7 +23,7 @@ function Verification(){
                 headers:{
                     "Content-type":"application/json"
                 },
-                body: JSON.stringify({name,password,branch,batch})
+                body: JSON.stringify({name,password,branch,batch,phone})
             })
             if(response.ok)
                 navigate("/profilehome")
@@ -62,6 +63,7 @@ function Verification(){
                         )
                     })}
                 </select></div>
+                <div className={styles.entry}><label>Phone No. :    </label><input value={phone} type="number" onChange={(e) => setPhone(e.target.value)} required/></div>
                 <div className={styles.entry}><label>New Password :   </label><input value={password} type="password" onChange={(e) => setPassword(e.target.value)} required/></div>
                 <div className={styles.entry}><label>Confirm Password :   </label><input value={confirmPassword} type="password" onChange={(e) => setConfirmPassword(e.target.value)} required/></div>
                 <button type="submit" className={styles.authButton}>Verify</button>
