@@ -1,16 +1,14 @@
 import { useState,useEffect } from "react"
 import styles from "../Landing_Page/Auth.module.css"
-import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function CreateProfiles(){
     const [start,setStart] = useState("")
     const [end,setEnd] = useState("")
     const [institute,setInstitute] = useState("")
-    const [progress,setProgress]=useState(`Successfully created ${end-start+1} users!`)
+    const [progress,setProgress]=useState("")
 
     const role="student";
-    const navigate=useNavigate()
 
     const createHandle= async(e) => {
         e.preventDefault()

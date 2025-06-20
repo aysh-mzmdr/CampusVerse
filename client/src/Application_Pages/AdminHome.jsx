@@ -9,9 +9,9 @@ function AdminHome(){
 
     const navigate=useNavigate()
     const toCreateProfiles=() => {navigate("/createprofiles")}
-    const toProfile=() => {navigate("/profile")}
-    const toGames=() => {navigate("/games")}
-    const toBlog=() => {navigate("/blog")}
+    const toNamelist=() => {navigate("/namelist")}
+    const toEvents=() => {navigate("/events")}
+    const toMessenger=() => {navigate("/messenger")}
 
     const logoutHandle=async () => {
         try{
@@ -40,9 +40,9 @@ function AdminHome(){
             <h1 style={{color:"white",textAlign:"center",fontFamily:"Verdana",fontSize:"3.2em",fontWeight:"600"}}>Activity Building</h1>
             <div className={styles.profile_section}>
                 <button onClick={toCreateProfiles} className={styles.profile_button}>Create Profiles</button>
-                <button onClick={toProfile} className={styles.profile_button}>Profile</button>
-                <button onClick={toGames} className={styles.profile_button}>Games</button>
-                <button onClick={toBlog} className={styles.profile_button}>Blog</button>
+                <button onClick={toNamelist} className={styles.profile_button}>Namelist</button>
+                <button onClick={toEvents} className={styles.profile_button}>Events</button>
+                <button onClick={toMessenger} className={styles.profile_button}>Messenger</button>
                 <button className={styles.logout_button} onClick={logoutHandle}>Logout</button>          
             </div>
         </>

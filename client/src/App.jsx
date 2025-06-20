@@ -13,6 +13,9 @@ import Friends from "./Application_Pages/Friends.jsx"
 import FindFriends from "./Application_Pages/FindFriends.jsx"
 import HelpSquare from "./Application_Pages/HelpSquare.jsx"
 import Blog from "./Application_Pages/Blog.jsx"
+import Namelist from "./Application_Pages/Namelist.jsx"
+import Events from "./Application_Pages/Events.jsx"
+import Messenger from "./Application_Pages/Messenger.jsx"
 
 import {BrowserRouter as Router,Routes, Route} from "react-router-dom"
 
@@ -26,6 +29,9 @@ function App(){
           <Route path="/register" element={<Register/>}/>
           <Route path="/profilehome" element={<ProfileHome/>}/>
           <Route path="/adminhome" element={<AdminHome/>}/>
+          <Route path="/namelist" element={<Namelist/>}/>
+          <Route path="/events" element={<Events/>}/>
+          <Route path="/messenger" element={<Messenger/>}/>
           <Route path="/newaccounts" element={<NewAccounts/>}/>
           <Route path="/createprofiles" element={<CreateProfiles/>}/>
           <Route path="/unverifiedadmin" element={<UnverifiedAdmin/>}/>

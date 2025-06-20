@@ -64,7 +64,7 @@ app.post("/auth/logout",(request,response) => {
 })
 
 app.post("/auth/signup",async (request,response) => {
-    const {roll,password,institute,role,phone} = request.body
+    const {roll,password,institute,role} = request.body
     const salt=genSaltSync(10)
     const hashedPassword=bcrypt.hashSync(password,salt)
     if(role==="student"){
@@ -77,7 +77,7 @@ app.post("/auth/signup",async (request,response) => {
         }
     }
     try{
-        await pool.query("INSERT INTO users (id,roll,password,institute,role,phone) VALUES (DEFAULT,$1,$2,$3,$4) ON CONFLICT(roll,institute) DO NOTHING",[roll,hashedPassword,institute,role,phone])
+        await pool.query("INSERT INTO users (id,roll,password,institute,role) VALUES (DEFAULT,$1,$2,$3,$4) ON CONFLICT(roll,institute) DO NOTHING",[roll,hashedPassword,institute,role])
         return response.sendStatus(200)
     }    
     catch(err){
@@ -87,11 +87,11 @@ app.post("/auth/signup",async (request,response) => {
 })
 
 app.post("/auth/verify",async(request,response)=>{
-    const {name,password,branch,batch} = request.body
+    const {name,password,branch,batch,phone} = request.body
     const salt=genSaltSync(10)
     const hashedPassword=bcrypt.hashSync(password,salt)
     try{
-        await pool.query("UPDATE users SET name=$1,password=$2,branch=$3,batch=$4 WHERE id=$5",[name,hashedPassword,branch,batch,request.user.id])
+        await pool.query("UPDATE users SET name=$1,password=$2,branch=$3,batch=$4,phone=$5 WHERE id=$6",[name,hashedPassword,branch,batch,phone,request.user.id])
         await pool.query("UPDATE users SET verified=$1 WHERE id=$2",[true,request.user.id])
         return response.sendStatus(200)
     }
@@ -127,3 +127,8 @@ app.post("/api/newaccounts",async(request,response)=>{
 app.listen(SERVER_PORT)
 
 
+app.get("/api/students",async(request,response)=>{
+    const institute=request.user.institute;
+    const students=await pool.query("SELECT * FROM users WHERE institute=$1 AND ROLL!=0",[institute])
+    response.json(students.rows)
+})

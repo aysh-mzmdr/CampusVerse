@@ -1,0 +1,22 @@
+table{
+    margin:10px;
+    color: white;
+    font-size: 1.1em;
+}
+
+td{
+    text-align: center;
+    padding-inline: 1.5em;
+    padding-block: 1em;
+}
+
+button{
+    background:none;
+    border: none;
+    cursor: pointer;
+}
+
+img{
+    width:50px;
+    height: auto;
+}
