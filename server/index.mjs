@@ -1,4 +1,4 @@
-import express from "express"
+import express, { response } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import passport from "passport";
@@ -124,11 +124,38 @@ app.post("/api/newaccounts",async(request,response)=>{
     }
 
 })
-app.listen(SERVER_PORT)
-
 
 app.get("/api/students",async(request,response)=>{
     const institute=request.user.institute;
     const students=await pool.query("SELECT * FROM users WHERE institute=$1 AND ROLL!=0",[institute])
     response.json(students.rows)
 })
+
+app.delete("/api/students",async(request,response)=> {
+    const {id} = request.body
+    try{
+        await pool.query("DELETE FROM users WHERE id=$1",[id])
+        return response.sendStatus(200)
+    }
+    catch(e){
+        console.log(e)
+        return response.sendStatus(500)
+    }
+})
+
+
+app.patch("/auth/edit",async(request,response)=>{
+    const {id,name,branch,batch,phone} = request.body
+    try{
+        await pool.query("UPDATE users SET name=$1,branch=$2,batch=$3,phone=$4 WHERE id=$5",[name,branch,batch,phone,id])
+        await pool.query("UPDATE users SET verified=$1 WHERE id=$2",[true,request.user.id])
+        return response.sendStatus(200)
+    }
+    catch(err){
+        console.log(err)
+        return response.sendStatus(500)
+    }
+})
+
+
+app.listen(SERVER_PORT)
