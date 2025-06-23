@@ -87,12 +87,14 @@ app.post("/auth/signup",async (request,response) => {
 })
 
 app.post("/auth/verify",async(request,response)=>{
-    const {name,password,branch,batch,phone} = request.body
+    const {name,password,branch,batch,phone,userInterests} = request.body
     const salt=genSaltSync(10)
     const hashedPassword=bcrypt.hashSync(password,salt)
     try{
         await pool.query("UPDATE users SET name=$1,password=$2,branch=$3,batch=$4,phone=$5 WHERE id=$6",[name,hashedPassword,branch,batch,phone,request.user.id])
         await pool.query("UPDATE users SET verified=$1 WHERE id=$2",[true,request.user.id])
+        for(const interestID of userInterests)
+            await pool.query("INSERT INTO user_interest_table VALUES($1,$2)",[request.user.id,interestID])
         return response.sendStatus(200)
     }
     catch(err){
@@ -157,5 +159,14 @@ app.patch("/auth/edit",async(request,response)=>{
     }
 })
 
+app.get("/api/interests",async(request,response)=> {
+    const interestsQuery=await pool.query("SELECT * FROM interests")
+    response.json(interestsQuery.rows)
+})
+
+app.get("/api/collectInterest",async(request,response)=> {
+    const interestQuery=await pool.query("SELECT * FROM interests JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[request.user.id])
+    response.json(interestQuery.rows)
+})
 
 app.listen(SERVER_PORT)

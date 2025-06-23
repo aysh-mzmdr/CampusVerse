@@ -14,6 +14,7 @@ import FindFriends from "./Application_Pages/FindFriends.jsx"
 import HelpSquare from "./Application_Pages/HelpSquare.jsx"
 import Blog from "./Application_Pages/Blog.jsx"
 import Edit from "./Application_Pages/Edit.jsx"
+import EditUser from "./Application_Pages/EditUser.jsx"
 import Namelist from "./Application_Pages/Namelist.jsx"
 import Events from "./Application_Pages/Events.jsx"
 import Messenger from "./Application_Pages/Messenger.jsx"
@@ -32,6 +33,7 @@ function App(){
           <Route path="/adminhome" element={<AdminHome/>}/>
           <Route path="/namelist" element={<Namelist/>}/>
           <Route path="/edit" element={<Edit/>}/>
+          <Route path="/editUser" element={<EditUser/>}/>
           <Route path="/events" element={<Events/>}/>
           <Route path="/messenger" element={<Messenger/>}/>
           <Route path="/newaccounts" element={<NewAccounts/>}/>

@@ -68,8 +68,8 @@ function Namelist(){
                     <td>{student.branch}</td>
                     <td>{student.batch}</td>
                     <td>{student.phone}</td>
-                    <td><button onClick={() => editFunction(student)}><img style={{filter:"invert(100%)"}}src={Edit}/></button></td>
-                    <td><button onClick={() => deleteFunction(student.id)}><img style={{filter:"hue-rotate(150deg) brightness(2)",width:"40px",height:"auto"}} src={Delete}/></button></td>
+                    <td><button className={style.functionButton} onClick={() => editFunction(student)}><img className={style.buttonImg} style={{filter:"invert(100%)"}}src={Edit}/></button></td>
+                    <td><button className={style.functionButton} onClick={() => deleteFunction(student.id)}><img className={style.buttonImg} style={{filter:"hue-rotate(150deg) brightness(2)",width:"40px",height:"auto"}} src={Delete}/></button></td>
                 </tr>
                 ))}
             </tbody>

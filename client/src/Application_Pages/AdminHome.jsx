@@ -1,4 +1,4 @@
-import styles from "./Profile.module.css"
+import styles from "./Home.module.css"
 import { useNavigate } from "react-router-dom"
 import { useState,useEffect } from "react"
 import EventCard from "./EventCard.jsx"

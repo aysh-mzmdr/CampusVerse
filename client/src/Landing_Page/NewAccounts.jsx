@@ -43,7 +43,7 @@ function NewAccounts(){
     },[])
 
     return(
-        <div className={styles.auth}>
+        <div className={styles.authNotVerify}>
             <button className={styles.goButton} onClick={toLogin}>Go Back</button>
             <h1 className={styles.title}>New Accounts</h1>
             <form className={styles.loginBox} onSubmit={newAccountsHandle}>

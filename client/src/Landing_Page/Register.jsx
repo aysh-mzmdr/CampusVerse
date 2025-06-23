@@ -32,7 +32,7 @@ function Register(){
     }
 
     return(
-        <div className={styles.auth}>
+        <div className={styles.authNotVerify}>
             <h1 className={styles.title}>Register</h1>
             <form className={styles.loginBox} onSubmit={signupHandle}>
                 <div className={styles.entry}><label>Roll Number :    </label><input style={{color:"grey"}}value={roll} type="text" disabled/></div>

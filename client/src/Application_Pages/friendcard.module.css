@@ -1,0 +1,26 @@
+.card{
+    color:white;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    width:300px;
+    padding: 20px;
+    margin-block: 40px;
+    margin-inline: 50px;
+}
+
+.interests{
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.interest{
+    color:white;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.cardImage{
+    align-self: center;
+}

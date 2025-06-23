@@ -1,0 +1,80 @@
+.profile_section{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height:auto;
+}
+
+.profile_button{
+    font-size: 2em;
+    font-weight: 600;
+    width:10em;
+    height:3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1.5em;
+    padding-block: 0.7em;
+    margin-inline: 4em;
+    margin-block: 1.5em;
+    border-radius: 15px;
+    border: 1px solid green;
+    background-color: rgb(45, 221, 45);
+    box-shadow: 0px 0px 50px green;
+    text-shadow: 0px 0px 5px white,0px 0px 7px black;
+    color:black;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.profile_button:hover{
+    color:white;
+    background-color: green;
+}
+
+.logout_button{
+    font-size: 2em;
+    font-weight: 600;
+    width:10em;
+    height:3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1.5em;
+    padding-block: 0.7em;
+    margin-inline: 4em;
+    margin-block: 1.5em;
+    border-radius: 15px;
+    border: 1px solid red;
+    background-color: red;
+    box-shadow: 0px 0px 25px red;
+    text-shadow: 0px 0px 5px white,0px 0px 7px black;
+    color:black;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.logout_button:hover{
+    color:white;
+    background-color: rgb(186, 0, 0);
+}
+
+.events{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.profile_footer{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding-bottom: 25px;
+    color: white;
+    font-family: monospace;
+    font-size: 1.5em;
+    background-image:linear-gradient(black,rgb(49,49,49));
+    width:100vw;
+    height:20vh;
+}

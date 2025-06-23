@@ -46,7 +46,7 @@ function Login(){
     },[])
 
     return(
-        <div className={styles.auth}>
+        <div className={styles.authNotVerify}>
             <button className={styles.goButton} onClick={toNewAccounts}>New Account? Know your temporary password here</button>
             <h1 className={styles.title}>Login</h1>
             <form className={styles.loginBox} onSubmit={loginHandle}>

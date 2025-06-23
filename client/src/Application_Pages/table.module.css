@@ -10,13 +10,13 @@ td{
     padding-block: 1em;
 }
 
-button{
+.functionButton{
     background:none;
     border: none;
     cursor: pointer;
 }
 
-img{
+.buttonImg{
     width:30px;
     height: auto;
 }
