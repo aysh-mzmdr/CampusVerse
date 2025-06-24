@@ -15,6 +15,10 @@ function FriendCard(props){
                     )
                 })}
             </div>
+            <div className={style.buttonArea}>
+                <button className={style.seeProfile}>See Profile</button>
+                <button className={style.addFriend}>Add Friend</button>
+            </div>
         </div>
     )
 

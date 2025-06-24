@@ -169,4 +169,23 @@ app.get("/api/collectInterest",async(request,response)=> {
     response.json(interestQuery.rows)
 })
 
+app.get("/api/batchmates",async(request,response)=>{
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$1 AND users.id NOT IN ($2,$3)",[request.user.institute,request.user.id,0])
+    const batchmatesmap={}
+    for(const row of batchmatesQuery.rows){
+        const {
+            users_id,users_name,batch,branch,interest_id,interest_name
+        }=row
+
+        if(!batchmatesmap[users_id]){
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,interests:[]}
+        }
+        if(interest_id && interest_name){
+            batchmatesmap[users_id].interests.push(interest_name)
+        }
+    }
+    const batchmates=Object.values(batchmatesmap);          // Removes the keys from the map, keeps only the values
+    response.json(batchmates)
+})
+
 app.listen(SERVER_PORT)
