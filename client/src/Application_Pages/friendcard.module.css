@@ -70,3 +70,14 @@
     color: rgb(110, 232, 110);
     text-shadow: 0px 0px 3px black;
 }
+
+.addFriend:disabled{
+    background-color: grey;
+    box-shadow: 0px 0px 10px grey;
+}
+
+.addFriend:disabled:hover{
+    background-color: grey;
+    color: rgba(16, 16, 16, 0.3);
+    text-shadow: none;
+}

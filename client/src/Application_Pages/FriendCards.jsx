@@ -1,6 +1,56 @@
+import { useEffect, useState } from "react"
 import style from "./friendcard.module.css"
 
+const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function FriendCard(props){
+
+    const [status,setStatus]=useState(false)
+    const [isFriend,setFriend]=useState(false)
+    const [temp,setTemp]=useState(false)
+    const sendFriendRequest=async()=>{
+
+        try{
+            const friendID=props.id
+            const response=await fetch(`http://localhost:${SERVER_PORT}/send/friendRequest`,{
+                method:"POST",
+                credentials:"include",
+                headers:{
+                    "Content-type":"application/json"
+                },
+                body: JSON.stringify({friendID})
+            })
+            if(!response.ok){
+                throw new Error("ERROR")
+            }
+        }
+        catch(e){
+            console.log(e)
+        }
+        setTemp(!temp)
+    }
+
+    useEffect(() => {
+        const checkStatus=async()=>{
+            try{
+                const friendID=props.id
+                const response=await fetch(`http://localhost:${SERVER_PORT}/api/isFriend`,{
+                    method:"POST",
+                    credentials:"include",
+                    headers:{
+                        "Content-type":"application/json"
+                    },
+                    body: JSON.stringify({friendID})
+                })
+                const data=await response.json()
+                setFriend(data.isFriend.accepted)
+                setStatus(data.status.exists)
+            }
+            catch(e){
+                console.log(e)
+            }
+        }   
+        checkStatus()
+    },[temp])
 
     return(
         <div className={style.card}>
@@ -17,7 +67,7 @@ function FriendCard(props){
             </div>
             <div className={style.buttonArea}>
                 <button className={style.seeProfile}>See Profile</button>
-                <button className={style.addFriend}>Add Friend</button>
+                <button className={style.addFriend} onClick={sendFriendRequest} disabled={status}>{status? (isFriend? "Friends":"Pending"):"Add Friend"}</button>
             </div>
         </div>
     )

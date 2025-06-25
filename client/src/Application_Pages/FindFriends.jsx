@@ -18,7 +18,7 @@ function FindFriends(){
         <>
             <div className={style.friends}>
                 {batchmates.map(student => (
-                    <Student key={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
+                    <Student key={student.id} id={student.id }name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
                 ))}
             </div> 
         </>

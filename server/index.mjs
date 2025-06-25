@@ -188,4 +188,28 @@ app.get("/api/batchmates",async(request,response)=>{
     response.json(batchmates)
 })
 
+app.post("/send/friendRequest",async(request,response)=>{
+    const userID=request.user.id
+    const {friendID}=request.body
+    try{
+        await pool.query("INSERT INTO friends VALUES ($1,$2,$3)",[userID,friendID,false])
+        return response.sendStatus(200)
+    }
+    catch(e){
+        return response.sendStatus(500)
+    }
+})
+
+app.post("/api/isFriend",async(request,response)=>{
+    const {friendID}=request.body
+    const userID=request.user.id
+    const status=await pool.query("SELECT EXISTS( SELECT 1 FROM friends WHERE (sender_id,receiver_id)=($1,$2) OR (sender_id,receiver_id)=($2,$1))",[userID,friendID])
+    let isFriend=false;
+    if(status){
+        const isFriendQuery=await pool.query("SELECT accepted FROM friends WHERE (sender_id,receiver_id)=($1,$2) OR (sender_id,receiver_id)=($2,$1)",[userID,friendID])
+        isFriend=isFriendQuery.rows[0]
+    }
+    response.json({status:status.rows[0],isFriend:isFriend})
+})
+
 app.listen(SERVER_PORT)
