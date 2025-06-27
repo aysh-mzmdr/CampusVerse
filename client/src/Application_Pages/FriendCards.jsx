@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import style from "./friendcard.module.css"
+import style from "./Friendcard.module.css"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function FriendCard(props){

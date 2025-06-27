@@ -45,6 +45,9 @@ function AdminHome(){
                 <button onClick={toMessenger} className={styles.profile_button}>Messenger</button>
                 <button className={styles.logout_button} onClick={logoutHandle}>Logout</button>          
             </div>
+            <div className={styles.profile_footer}>
+                Created by aysh_mzmdr
+            </div>
         </>
     )
 }

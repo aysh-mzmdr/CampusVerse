@@ -170,7 +170,7 @@ app.get("/api/collectInterest",async(request,response)=> {
 })
 
 app.get("/api/batchmates",async(request,response)=>{
-    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$1 AND users.id NOT IN ($2,$3)",[request.user.institute,request.user.id,0])
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$1 AND users.id NOT IN ($2,$3) AND users.name!='' AND users.id NOT IN ( SELECT sender_id FROM friends UNION SELECT receiver_id FROM friends)",[request.user.institute,request.user.id,0])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
