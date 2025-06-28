@@ -5,3 +5,69 @@
     justify-content: center;
     align-items: center;
 }
+
+.navbar{
+    padding-block: 1.5em;
+    padding: 1.5em;
+    color:white;
+    display: flex;
+    column-gap: 1.2em;
+    
+}
+
+.inputBox{
+    width:400px;
+    font-size: 1em;
+}
+
+.function_button{
+    font-size: 1.2em;
+    font-weight: 600;
+    width:200px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: 1.5em;
+    padding-block: 0.7em;
+    border-radius: 10px;
+    border: 1px solid green;
+    background-color: rgb(45, 221, 45);
+    box-shadow: 0px 0px 50px green;
+    text-shadow: 0px 0px 5px white,0px 0px 7px black;
+    color:black;
+    cursor: pointer;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.function_button:hover{
+    color:white;
+    background-color: green;
+}
+
+.buttonArea{
+    display: flex;
+    margin-left: auto;
+    column-gap: 1.5em;
+}
+
+.sort{
+    row-gap: 0.5em;
+    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1.1em;
+}
+
+.sortOption{
+    font-size: 1em;
+    padding-inline: 0.8em;
+    padding-block: 0.2em;
+    background-color:rgb(22, 111, 22); ;
+    color:white;
+    cursor: pointer;
+    border-color: white;
+    border-width: 1px;
+}
