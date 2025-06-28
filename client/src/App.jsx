@@ -17,8 +17,9 @@ import Edit from "./Application_Pages/Edit.jsx"
 import EditUser from "./Application_Pages/EditUser.jsx"
 import Namelist from "./Application_Pages/Namelist.jsx"
 import Events from "./Application_Pages/Events.jsx"
+import Pending from "./Application_Pages/Pending.jsx"
 import Messenger from "./Application_Pages/Messenger.jsx"
-
+import Requests from "./Application_Pages/Requests.jsx"
 import {BrowserRouter as Router,Routes, Route} from "react-router-dom"
 
 function App(){
@@ -36,6 +37,8 @@ function App(){
           <Route path="/editUser" element={<EditUser/>}/>
           <Route path="/events" element={<Events/>}/>
           <Route path="/messenger" element={<Messenger/>}/>
+          <Route path="/pending" element={<Pending/>}/>
+          <Route path="/requests" element={<Requests/>}/>
           <Route path="/newaccounts" element={<NewAccounts/>}/>
           <Route path="/createprofiles" element={<CreateProfiles/>}/>
           <Route path="/unverifiedadmin" element={<UnverifiedAdmin/>}/>

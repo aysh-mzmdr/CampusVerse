@@ -205,11 +205,55 @@ app.post("/api/isFriend",async(request,response)=>{
     const userID=request.user.id
     const status=await pool.query("SELECT EXISTS( SELECT 1 FROM friends WHERE (sender_id,receiver_id)=($1,$2) OR (sender_id,receiver_id)=($2,$1))",[userID,friendID])
     let isFriend=false;
-    if(status){
+    if(status.rows[0]){
         const isFriendQuery=await pool.query("SELECT accepted FROM friends WHERE (sender_id,receiver_id)=($1,$2) OR (sender_id,receiver_id)=($2,$1)",[userID,friendID])
         isFriend=isFriendQuery.rows[0]
     }
     response.json({status:status.rows[0],isFriend:isFriend})
+})
+
+app.get("/api/friends",async(request,response)=>{
+    const friendsQuery=await pool.query("SELECT * FROM users WHERE users.id in (SELECT sender_id FROM friends WHERE accepted = true UNION SELECT receiver_id FROM friends WHERE accepted = true)")
+    const friends=friendsQuery.rows
+    response.json(friends)
+})
+
+app.get("/api/pendingFriendsReceived",async(request,response)=>{
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.sender_id WHERE friends.receiver_id=$1 AND friends.accepted=$2",[request.user.id,false])
+    const batchmatesmap={}
+    for(const row of batchmatesQuery.rows){
+        const {
+            users_id,users_name,batch,branch,interest_id,interest_name
+        }=row
+
+        if(!batchmatesmap[users_id]){
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,interests:[]}
+        }
+        if(interest_id && interest_name){
+            batchmatesmap[users_id].interests.push(interest_name)
+        }
+    }
+    const friends=Object.values(batchmatesmap);          // Removes the keys from the map, keeps only the values
+    response.json(friends)
+})
+
+app.get("/api/pendingFriendsSent",async(request,response)=>{
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.receiver_id WHERE friends.sender_id=$1 AND friends.accepted=$2",[request.user.id,false])
+    const batchmatesmap={}
+    for(const row of batchmatesQuery.rows){
+        const {
+            users_id,users_name,batch,branch,interest_id,interest_name
+        }=row
+
+        if(!batchmatesmap[users_id]){
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,interests:[]}
+        }
+        if(interest_id && interest_name){
+            batchmatesmap[users_id].interests.push(interest_name)
+        }
+    }
+    const friends=Object.values(batchmatesmap);          // Removes the keys from the map, keeps only the values
+    response.json(friends)
 })
 
 app.listen(SERVER_PORT)

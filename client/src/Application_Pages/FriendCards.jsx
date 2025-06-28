@@ -42,7 +42,12 @@ function FriendCard(props){
                     body: JSON.stringify({friendID})
                 })
                 const data=await response.json()
-                setFriend(data.isFriend.accepted)
+                try{
+                    setFriend(data.isFriend.accepted)
+                }
+                catch(e){
+                    
+                }
                 setStatus(data.status.exists)
             }
             catch(e){

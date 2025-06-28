@@ -5,19 +5,21 @@ import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 
-function FindFriends(){
+function Requests(){
 
-    const [batchmates,setBatchmates] = useState([])
+    const [friends,setFriends] = useState([])
     const navigate=useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:${SERVER_PORT}/api/batchmates`,{credentials:"include"})
+        fetch(`http://localhost:${SERVER_PORT}/api/pendingFriendsReceived`,{credentials:"include"}) 
         .then(response => response.json())
-        .then(data => setBatchmates(data))
+        .then(data => {setFriends(data);console.log(data)})
         .catch(e => console.log(e))
     },[])
+
     return(
         <>
+
             <div className={style.navbar}>
                 <label>Search : </label><input type="text" placeholder="Enter any keyword"></input>
                 <button onClick={() => navigate("/requests")}>Requests</button>
@@ -29,13 +31,14 @@ function FindFriends(){
                     <button>Branch</button>
                 </div>
             </div>
+
             <div className={style.friends}>
-                {batchmates.map(student => (
-                    <Student key={student.id} id={student.id }name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
+                {friends.map(student => (
+                    <Student key={student.id} id={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
                 ))}
             </div> 
         </>
     )
 }
 
-export default FindFriends
+export default Requests
