@@ -2,6 +2,7 @@ import style from "./Friends.module.css"
 import Student from "./FriendCards.jsx"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import home from "../assets/Home.png"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 
@@ -41,6 +42,7 @@ function Pending(){
                     <Student key={student.id} id={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
                 ))}
             </div> 
+            <button className={style.home} onClick={() => navigate("/profilehome")}><img className={style.homeImage} src={home} alt="Home"></img></button>
         </>
     )
 }

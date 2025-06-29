@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import styles from "../Landing_Page/Auth.module.css"
 import { useLocation, useNavigate } from "react-router-dom"
+import home from "../assets/Home.png"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function EditUser(){
@@ -9,7 +10,7 @@ function EditUser(){
     const location=useLocation()
     const userData=location.state
 
-    const [count,setCount]=useState(0);
+    const [count,setCount] = useState(0);
     const [name,setName] = useState(userData.user.name)
     const [password,setPassword] = useState("")
     const [confirmPassword,setConfirmPassword] = useState("")
@@ -110,6 +111,7 @@ function EditUser(){
                     </div>
                 <button type="submit" className={styles.authButton}>Submit</button>
             </form>
+            <button className={styles.home} onClick={() => navigate("/profilehome")}><img className={styles.homeImage} src={home} alt="Home"></img></button>
         </div>
     )
 }

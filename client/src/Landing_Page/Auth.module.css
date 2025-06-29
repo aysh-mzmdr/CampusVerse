@@ -159,3 +159,17 @@ input:focus{
     margin-block: 0.5em;
     width:250px;
 }
+
+.homeImage{
+    width:200px;
+    height:auto;
+}
+
+.home{
+    background: none;
+    border: none;
+    cursor:pointer;
+    position:fixed;
+    bottom:0px;
+    right:0px;
+}
