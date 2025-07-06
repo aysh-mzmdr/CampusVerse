@@ -1,4 +1,4 @@
-import express, { response } from "express"
+import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import passport from "passport";
@@ -6,6 +6,8 @@ import bcrypt,{ genSaltSync } from "bcrypt";
 import pool from "../db/database.mjs"
 import session from "express-session";
 import "./strategies.mjs"
+import multer from "multer"
+import path from "path"
 
 dotenv.config({path:"../.env"})
 const CLIENT_PORT=process.env.CLIENT_PORT;
@@ -29,6 +31,8 @@ app.use(session({
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+
 
 app.post("/auth/login", passport.authenticate("local"),(request,response) => {
     const user=request.user;
@@ -87,7 +91,7 @@ app.post("/auth/signup",async (request,response) => {
 })
 
 app.post("/auth/verify",async(request,response)=>{
-    const {name,password,branch,batch,phone,userInterests} = request.body
+    const {name,password,branch,batch,phone,userInterests,profilePicState,coverPicState} = request.body
     const salt=genSaltSync(10)
     const hashedPassword=bcrypt.hashSync(password,salt)
     try{
@@ -255,5 +259,37 @@ app.get("/api/pendingFriendsSent",async(request,response)=>{
     const friends=Object.values(batchmatesmap);          // Removes the keys from the map, keeps only the values
     response.json(friends)
 })
+
+
+const storage=multer.diskStorage({
+    destination:(request,file,callback)=>{
+        console.log(file)
+        if(file.fieldname=="profile")
+            callback(null,"../db/profile_pics/")
+        else if(file.fieldname=="cover")
+            callback(null,"../db/cover_pics/")
+        else
+            callback(new Error("ERROR"))
+    },
+    filename:(request,file,callback) => {
+        const ext=path.extname(file.originalname)
+        const uniqueName=request.user.id+"_"+file.fieldname+ext;
+        callback(null,uniqueName)
+    }
+})
+
+const upload=multer({storage})
+
+app.post("/auth/verifyPics",upload.fields([
+    {name:"profile",maxCount:1},
+    {name:"cover",maxCount:1}
+    ]),async(request,response)=>{
+        console.log(request.files)
+        const profile=request.files["profile"]?.[0]?.path
+        const cover=request.files["cover"]?.[0]?.path
+        await pool.query("UPDATE users SET profile_pic=$1,cover_pic=$2",[profile,cover])
+        return response.sendStatus(200)
+    }
+)
 
 app.listen(SERVER_PORT)
