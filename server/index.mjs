@@ -174,15 +174,15 @@ app.get("/api/collectInterest",async(request,response)=> {
 })
 
 app.get("/api/batchmates",async(request,response)=>{
-    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$1 AND users.id NOT IN ($2,$3) AND users.name!='' AND users.id NOT IN ( SELECT sender_id FROM friends UNION SELECT receiver_id FROM friends)",[request.user.institute,request.user.id,0])
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$1 AND users.id NOT IN ($2,$3) AND users.name!='' AND users.id NOT IN ( SELECT sender_id FROM friends UNION SELECT receiver_id FROM friends)",[request.user.institute,request.user.id,0])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)
@@ -223,15 +223,15 @@ app.get("/api/friends",async(request,response)=>{
 })
 
 app.get("/api/pendingFriendsReceived",async(request,response)=>{
-    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.sender_id WHERE friends.receiver_id=$1 AND friends.accepted=$2",[request.user.id,false])
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.sender_id WHERE friends.receiver_id=$1 AND friends.accepted=$2",[request.user.id,false])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)
@@ -242,15 +242,15 @@ app.get("/api/pendingFriendsReceived",async(request,response)=>{
 })
 
 app.get("/api/pendingFriendsSent",async(request,response)=>{
-    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.receiver_id WHERE friends.sender_id=$1 AND friends.accepted=$2",[request.user.id,false])
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.receiver_id WHERE friends.sender_id=$1 AND friends.accepted=$2",[request.user.id,false])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)
@@ -263,11 +263,10 @@ app.get("/api/pendingFriendsSent",async(request,response)=>{
 
 const storage=multer.diskStorage({
     destination:(request,file,callback)=>{
-        console.log(file)
         if(file.fieldname=="profile")
-            callback(null,"../db/profile_pics/")
+            callback(null,"../client/public/profile_pics/")
         else if(file.fieldname=="cover")
-            callback(null,"../db/cover_pics/")
+            callback(null,"../client/public/cover_pics/")
         else
             callback(new Error("ERROR"))
     },
@@ -284,9 +283,8 @@ app.post("/auth/verifyPics",upload.fields([
     {name:"profile",maxCount:1},
     {name:"cover",maxCount:1}
     ]),async(request,response)=>{
-        console.log(request.files)
-        const profile=request.files["profile"]?.[0]?.path
-        const cover=request.files["cover"]?.[0]?.path
+        const profile=`/profile_pics/${request.files["profile"]?.[0]?.filename}`
+        const cover=`/cover_pics/${request.files["cover"]?.[0]?.filename}`
         await pool.query("UPDATE users SET profile_pic=$1,cover_pic=$2",[profile,cover])
         return response.sendStatus(200)
     }

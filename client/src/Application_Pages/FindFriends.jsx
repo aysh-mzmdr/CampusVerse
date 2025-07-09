@@ -1,7 +1,7 @@
 import style from "./Friends.module.css"
 import Student from "./FriendCards.jsx"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { data, useNavigate } from "react-router-dom"
 import home from "../assets/Home.png"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
@@ -14,7 +14,7 @@ function FindFriends(){
     useEffect(() => {
         fetch(`http://localhost:${SERVER_PORT}/api/batchmates`,{credentials:"include"})
         .then(response => response.json())
-        .then(data => setBatchmates(data))
+        .then(data => {setBatchmates(data);console.log()})
         .catch(e => console.log(e))
     },[])
     return(
@@ -38,7 +38,7 @@ function FindFriends(){
             <h1 style={{color:"white",textAlign:"center",marginBlockStart:"2em",marginBlockEnd:"1.2em",fontSize:"3em"}}>Find Friends</h1>
             <div className={style.friends}>
                 {batchmates.map(student => (
-                    <Student key={student.id} id={student.id }name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
+                    <Student key={student.id} image={student.image} id={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
                 ))}
             </div> 
             <button className={style.home} onClick={() => navigate("/profilehome")}><img className={style.homeImage} src={home} alt="Home"></img></button>

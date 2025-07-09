@@ -14,7 +14,7 @@ function Profile(){
     useEffect(()=>{
             fetch(`http://localhost:${SERVER_PORT}/api/collect`,{credentials:"include"})
             .then(response => response.json())
-            .then(data => setUser(data.user))
+            .then(data => {setUser(data.user);console.log(data)})
             .catch(err => console.log(err))
     },[])
     
@@ -30,8 +30,8 @@ function Profile(){
         <>
             <div className={style.profile}>
                 <div className={style.photos}>
-                    <img alt="cover photo"></img>
-                    <img alt="profile photo"></img>
+                    <img src={user.cover_pic} alt="cover photo"></img>
+                    <img src={user.profile_pic} alt="profile photo"></img>
                 </div>
                 <h1 className={style.head}>About</h1>
                 <div className={style.about}>

@@ -68,7 +68,7 @@ function CreateProfiles(){
     }
 
     return(
-        <div className={styles.auth}>
+        <div className={styles.authNotVerify}>
             <h1 className={styles.progress}>{progress}</h1>
             <h1 className={styles.title}>Create Profiles</h1>
             <form className={styles.loginBox} onSubmit={createHandle}>

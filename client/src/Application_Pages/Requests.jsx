@@ -39,7 +39,7 @@ function Requests(){
             <h1 style={{color:"white",textAlign:"center",marginBlockStart:"2em",marginBlockEnd:"1.2em",fontSize:"3em"}}>Friend Requests</h1>
             <div className={style.friends}>
                 {friends.map(student => (
-                    <Student key={student.id} id={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
+                    <Student key={student.id} images={student.profile_pic} id={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
                 ))}
             </div> 
             <button className={style.home} onClick={() => navigate("/profilehome")}><img className={style.homeImage} src={home} alt="Home"></img></button>

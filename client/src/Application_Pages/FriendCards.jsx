@@ -7,8 +7,8 @@ function FriendCard(props){
     const [status,setStatus]=useState(false)
     const [isFriend,setFriend]=useState(false)
     const [temp,setTemp]=useState(false)
-    const sendFriendRequest=async()=>{
 
+    const sendFriendRequest=async()=>{
         try{
             const friendID=props.id
             const response=await fetch(`http://localhost:${SERVER_PORT}/send/friendRequest`,{
@@ -46,7 +46,7 @@ function FriendCard(props){
                     setFriend(data.isFriend.accepted)
                 }
                 catch(e){
-                    
+
                 }
                 setStatus(data.status.exists)
             }
@@ -59,7 +59,7 @@ function FriendCard(props){
 
     return(
         <div className={style.card}>
-            <img className={style.cardImage} src={props.image} alt="image"></img>
+            <img className={style.cardImage} src={"..\\..\\..\\db\\profile_pics\\2_profile.jpg"} alt="image"></img>
             <h1 style={{textAlign:"center"}}>{props.name}</h1>
             <h2>Batch  : {props.batch}</h2>
             <h2>Branch : {props.branch}</h2>
