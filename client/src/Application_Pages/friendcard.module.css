@@ -3,8 +3,8 @@
     border: 1px solid white;
     display: flex;
     flex-direction: column;
-    width:300px;
-    height:440px;
+    width:350px;
+    height:600px;
     padding: 20px;
     margin-block: 40px;
     margin-inline: 50px;
@@ -24,6 +24,9 @@
 
 .cardImage{
     align-self: center;
+    width:250px;
+    height:250px;
+    border-radius: 100%;
 }
 
 .buttonArea{

@@ -59,7 +59,7 @@ function FriendCard(props){
 
     return(
         <div className={style.card}>
-            <img className={style.cardImage} src={"..\\..\\..\\db\\profile_pics\\2_profile.jpg"} alt="image"></img>
+            <img className={style.cardImage} src={props.image} alt="image"></img>
             <h1 style={{textAlign:"center"}}>{props.name}</h1>
             <h2>Batch  : {props.batch}</h2>
             <h2>Branch : {props.branch}</h2>

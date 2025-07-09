@@ -285,7 +285,7 @@ app.post("/auth/verifyPics",upload.fields([
     ]),async(request,response)=>{
         const profile=`/profile_pics/${request.files["profile"]?.[0]?.filename}`
         const cover=`/cover_pics/${request.files["cover"]?.[0]?.filename}`
-        await pool.query("UPDATE users SET profile_pic=$1,cover_pic=$2",[profile,cover])
+        await pool.query("UPDATE users SET profile_pic=$1,cover_pic=$2 WHERE id=$3",[profile,cover,request.user.id])
         return response.sendStatus(200)
     }
 )

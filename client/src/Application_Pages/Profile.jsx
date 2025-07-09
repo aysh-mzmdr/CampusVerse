@@ -30,8 +30,8 @@ function Profile(){
         <>
             <div className={style.profile}>
                 <div className={style.photos}>
-                    <img src={user.cover_pic} alt="cover photo"></img>
-                    <img src={user.profile_pic} alt="profile photo"></img>
+                    <img className={style.coverPhoto} src={user.cover_pic} alt="cover photo"></img>
+                    <img className={style.profilePhoto} src={user.profile_pic} alt="profile photo"></img>
                 </div>
                 <h1 className={style.head}>About</h1>
                 <div className={style.about}>

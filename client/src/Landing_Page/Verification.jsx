@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import styles from "./Auth.module.css"
 import { useNavigate } from "react-router-dom"
-import defaultProfilePic from "../../../db/profile_pics/default_profile_pic.png"
-import defaultCoverPic from "../../../db/cover_pics/default_cover_pic.png"
+import defaultProfilePic from "/profile_pics/default_profile_pic.png"
+import defaultCoverPic from "/cover_pics/default_cover_pic.png"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function Verification(){
