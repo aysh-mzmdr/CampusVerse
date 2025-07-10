@@ -1,4 +1,4 @@
-import express from "express"
+import express, { response } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import passport from "passport";
@@ -209,16 +209,32 @@ app.post("/api/isFriend",async(request,response)=>{
     const userID=request.user.id
     const status=await pool.query("SELECT EXISTS( SELECT 1 FROM friends WHERE (sender_id,receiver_id)=($1,$2) OR (sender_id,receiver_id)=($2,$1))",[userID,friendID])
     let isFriend=false;
+    let isRequest=false;
     if(status.rows[0]){
         const isFriendQuery=await pool.query("SELECT accepted FROM friends WHERE (sender_id,receiver_id)=($1,$2) OR (sender_id,receiver_id)=($2,$1)",[userID,friendID])
+        const requestQuery=await pool.query("SELECT EXISTS( SELECT 1 FROM friends WHERE sender_id=$1 AND receiver_id=$2 AND accepted=false)",[friendID,userID])
         isFriend=isFriendQuery.rows[0]
+        isRequest=requestQuery.rows[0]
     }
-    response.json({status:status.rows[0],isFriend:isFriend})
+    response.json({status:status.rows[0],isFriend:isFriend,isRequest:isRequest})
 })
 
 app.get("/api/friends",async(request,response)=>{
-    const friendsQuery=await pool.query("SELECT * FROM users WHERE users.id in (SELECT sender_id FROM friends WHERE accepted = true UNION SELECT receiver_id FROM friends WHERE accepted = true)")
-    const friends=friendsQuery.rows
+    const batchmatesQuery=await pool.query("SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,interests.id AS interest_id,interests.name AS interest_name FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.sender_id WHERE (friends.receiver_id=$1 OR friends.sender_id=$1) AND friends.accepted=$2",[request.user.id,true])
+    const batchmatesmap={}
+    for(const row of batchmatesQuery.rows){
+        const {
+            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
+        }=row
+
+        if(!batchmatesmap[users_id]){
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
+        }
+        if(interest_id && interest_name){
+            batchmatesmap[users_id].interests.push(interest_name)
+        }
+    }
+    const friends=Object.values(batchmatesmap);          // Removes the keys from the map, keeps only the values
     response.json(friends)
 })
 
@@ -289,5 +305,12 @@ app.post("/auth/verifyPics",upload.fields([
         return response.sendStatus(200)
     }
 )
+
+app.post("/api/acceptFriendRequest",async(request,response)=>{
+    const {friendID}=request.body
+    const userID=request.user.id
+    await pool.query("UPDATE friends SET accepted=true WHERE sender_id=$1 AND receiver_id=$2",[friendID,userID])
+    return response.sendStatus(200)
+})
 
 app.listen(SERVER_PORT)
