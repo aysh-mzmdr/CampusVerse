@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import style from "./Friendcard.module.css"
+import { useNavigate } from "react-router-dom"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function FriendCard(props){
@@ -8,7 +9,8 @@ function FriendCard(props){
     const [isFriend,setFriend]=useState(false)
     const [temp,setTemp]=useState(false)
     const [isRequest,setRequest]=useState(false)
-
+    const navigate=useNavigate()
+    
     const sendFriendRequest=async()=>{
 
         if(isRequest){
@@ -69,7 +71,6 @@ function FriendCard(props){
                     body: JSON.stringify({friendID})
                 })
                 const data=await response.json()
-                console.log(data)
                 try{
                     setFriend(data.isFriend.accepted)
                 }
@@ -86,6 +87,12 @@ function FriendCard(props){
         checkStatus()
     },[temp])
 
+    const seeProfileFunction = () => {
+        const friendID=props.id
+        const userData={friendID:friendID}
+        navigate("/friendprofile",{state:userData})
+    }
+
     return(
         <div className={style.card}>
             <img className={style.cardImage} src={props.image} alt="image"></img>
@@ -100,7 +107,7 @@ function FriendCard(props){
                 })}
             </div>
             <div className={style.buttonArea}>
-                <button className={style.seeProfile}>See Profile</button>
+                <button className={style.seeProfile} onClick={seeProfileFunction}>See Profile</button>
                 <button className={style.addFriend} onClick={sendFriendRequest} disabled={status && !isRequest}>{status? (isFriend? "Friends":( isRequest? "Accept":"Pending")):"Add Friend"}</button>
             </div>
         </div>

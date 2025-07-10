@@ -20,6 +20,7 @@ import Events from "./Application_Pages/Events.jsx"
 import Pending from "./Application_Pages/Pending.jsx"
 import Messenger from "./Application_Pages/Messenger.jsx"
 import Requests from "./Application_Pages/Requests.jsx"
+import FriendProfile from "./Application_Pages/FriendProfile.jsx"
 import {BrowserRouter as Router,Routes, Route} from "react-router-dom"
 
 function App(){
@@ -48,6 +49,7 @@ function App(){
           <Route path="/friends" element={<Friends/>}/>
           <Route path="/findfriends" element={<FindFriends/>}/>
           <Route path="/helpsquare" element={<HelpSquare/>}/>
+          <Route path="/friendprofile" element={<FriendProfile/>}/>
           <Route path="/blog" element={<Blog/>}/>
         </Routes>
       </Router>

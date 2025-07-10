@@ -112,6 +112,13 @@ app.get("/api/collect",(request,response) =>{
     response.send({user})
 })
 
+app.post("/api/friendCollect",async(request,response)=>{
+    const {friendID} = request.body;
+    const friendQuery = await pool.query("SELECT * FROM users WHERE id=$1",[friendID])
+    const friend=friendQuery.rows[0]
+    response.json(friend)
+})
+
 app.get("/api/institutions",async (request,response) =>{
     const institutionsQuery=await pool.query("SELECT DISTINCT institute FROM users")
     const institutions = institutionsQuery.rows;
@@ -170,6 +177,12 @@ app.get("/api/interests",async(request,response)=> {
 
 app.get("/api/collectInterest",async(request,response)=> {
     const interestQuery=await pool.query("SELECT * FROM interests JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[request.user.id])
+    response.json(interestQuery.rows)
+})
+
+app.post("/api/collectInterestFriend",async(request,response)=> {
+    const {friendID} = request.body
+    const interestQuery=await pool.query("SELECT * FROM interests JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[friendID])
     response.json(interestQuery.rows)
 })
 
