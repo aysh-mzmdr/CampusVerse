@@ -39,7 +39,7 @@
 
 .head{
     text-align: center;
-    font-size: 2.8em;
+    font-size: 4em;
     margin-block: 2em;
 }
 
@@ -47,9 +47,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    margin-block: 1.2em;
-    font-size: 1.5em;
+    align-items: start;
+    font-size: 2em;
+    width:fit-content;
 }
 
 .homeImage{

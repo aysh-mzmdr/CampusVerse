@@ -122,7 +122,7 @@ function Verification(){
                     </div>
                     <div className={styles.photoData}>
                         <div className={styles.buttons}>
-                            <input type="file" accept="image/png, image/jpeg" id="profile" name="profile" onChange={setProfilePic} required hidden/>
+                            <input type="file" accept="image/png, image/jpeg" id="profile" name="profile" onChange={setProfilePic} hidden/>
                             <input type="file" accept="image/png, image/jpeg" id="cover" name="cover" onChange={setCoverPic} hidden/>
                             <button className={styles.uploadIMG} type="button" onClick={()=>document.getElementById("profile").click()}>Profile photo</button>
                             <button className={styles.uploadIMG} type="button" onClick={()=>document.getElementById("cover").click()}>Cover photo</button>

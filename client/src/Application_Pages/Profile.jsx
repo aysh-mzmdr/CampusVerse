@@ -34,11 +34,13 @@ function Profile(){
                     <img className={style.profilePhoto} src={user.profile_pic} alt="profile photo"></img>
                 </div>
                 <h1 className={style.head}>About</h1>
-                <div className={style.about}>
-                    <label>Name   : {user.name}</label> 
-                    <label>Aura   : {user.aura}</label> 
-                    <label>Batch  : {user.batch}</label>
-                    <label>Branch : {user.branch}</label>  
+                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                    <div className={style.about}>
+                        <label>Name   : {user.name}</label> 
+                        <label>Aura   : {user.aura}</label> 
+                        <label>Batch  : {user.batch}</label>
+                        <label>Branch : {user.branch}</label>  
+                    </div>
                 </div>
                 <h1 className={style.head}>Interests</h1>
                 <div className={style.interests}>

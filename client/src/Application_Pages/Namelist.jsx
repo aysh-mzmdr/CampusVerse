@@ -3,7 +3,7 @@ import Delete from "../assets/delete.png"
 import Edit from "../assets/edit.png"
 import style from "./table.module.css"
 import { useNavigate } from "react-router-dom"
-
+import home from "../assets/Home.png"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function Namelist(){
@@ -74,6 +74,7 @@ function Namelist(){
                 ))}
             </tbody>
             </table>
+            <button style={{background: "none",border: "none",cursor:"pointer",position:"fixed",bottom:"0px",right:"0px"}} onClick={() => navigate("/adminhome")}><img style={{width:"200px",height:"auto"}} src={home} alt="Home"></img></button>
         </>
     )
 }

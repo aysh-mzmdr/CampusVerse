@@ -100,7 +100,7 @@ function FriendCard(props){
             <h2>Batch  : {props.batch}</h2>
             <h2>Branch : {props.branch}</h2>
             <div className={style.interests}>
-                {props.interests.map(interest => {
+                {props.interests[0].map(interest => {
                     return(
                         <button className={style.interest} key={interest} disabled>{interest}</button>
                     )

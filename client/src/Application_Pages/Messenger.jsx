@@ -9,7 +9,7 @@ function Messenger(){
     return(
         <>
             <h1>Hello there</h1>
-            <button className={style.home} onClick={() => navigate("/profilehome")}><img className={style.homeImage} src={home} alt="Home"></img></button>
+            <button className={style.home} onClick={() => navigate("/adminhome")}><img className={style.homeImage} src={home} alt="Home"></img></button>
         </>
     )
 }

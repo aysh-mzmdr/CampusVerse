@@ -1,5 +1,7 @@
 import { useState,useEffect } from "react"
 import styles from "../Landing_Page/Auth.module.css"
+import { useNavigate } from "react-router-dom"
+import home from "../assets/Home.png"
 
 const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 function CreateProfiles(){
@@ -7,7 +9,7 @@ function CreateProfiles(){
     const [end,setEnd] = useState("")
     const [institute,setInstitute] = useState("")
     const [progress,setProgress]=useState("")
-
+    const navigate=useNavigate()
     const role="student";
 
     const createHandle= async(e) => {
@@ -76,6 +78,7 @@ function CreateProfiles(){
                 <div className={styles.entry}><label>Last Roll Number :    </label><input value={end} type="text" onChange={(e) => setEnd(e.target.value)} required/></div>
                 <button type="submit" className={styles.authButton}>Create Profiles</button>
             </form>
+            <button style={{background: "none",border: "none",cursor:"pointer",position:"fixed",bottom:"0px",right:"0px"}} onClick={() => navigate("/adminhome")}><img style={{width:"200px",height:"auto"}} src={home} alt="Home"></img></button>
         </div>
     )
 }
