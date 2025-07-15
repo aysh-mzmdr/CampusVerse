@@ -12,6 +12,21 @@ function Pending(){
     const navigate=useNavigate();
 
     const [search,setSearch] = useState("")
+
+    const [pointAura,setPointAura]=useState(1000)
+    const [pointInterest,setPointInterest]=useState(50)
+    const [pointBranch,setBranch]=useState(50)
+    const [pointBatch,setBatch]=useState(50)
+    const[user,setUser]=useState("")
+    const[userInterest,setUserInterest]=useState([])
+
+    useEffect(()=>{
+        fetch(`http://localhost:${SERVER_PORT}/api/collect`,{credentials:"include"})
+        .then(response => response.json())
+        .then(data => {setUser(data.user);setUserInterest([...data.user.interests])})
+        .catch(err => console.log(err))
+    },[])
+
     useEffect(() => {
         const query=async()=>{
             try{
@@ -24,15 +39,34 @@ function Pending(){
                     body: JSON.stringify({search})
                 })
                 const data=await response.json()
-                console.log(data[0].interests[0][0])
-                setFriends(data)
+                let friends=[];
+                data.map(student => {
+                    let score=0;
+                    let commonInterest=0;
+                    userInterest.forEach(interest => {
+                        if(student.interests.includes(interest.name))
+                            commonInterest++;
+                    })
+                    score+=commonInterest*pointInterest;
+                    if(user.batch == student.batch)
+                        score+=student.batch*pointBatch;
+                    else
+                        score+=student.batch;
+                    if(user.branch == student.branch)
+                        score*=pointBranch;
+                    score+=student.aura * pointAura;
+                    friends.push({student,score:score})
+                    friends.sort((a,b) => b.score - a.score)
+                })
+                console.log(friends)
+                setFriends(friends)
             }
             catch(e){
                 console.log(e)
             }
         }
         query()
-    },[search])
+    },[search,pointAura,pointInterest,pointBatch,pointBranch])
 
     return(
         <>
@@ -42,12 +76,12 @@ function Pending(){
                     <button className={style.function_button} onClick={() => navigate("/requests")}>Requests</button>
                     <button className={style.function_button} onClick={() => navigate("/pending")}>Pending</button>
                     <div className={style.sort}>
-                        <label>Sort by:</label>
+                        <label>Recommend by:</label>
                         <div className={style.sortOptions}>
-                            <button className={style.sortOption}>Aura</button>
-                            <button className={style.sortOption}>Interests</button>
-                            <button className={style.sortOption}>Batch</button>
-                            <button className={style.sortOption}>Branch</button>
+                            <button className={style.sortOption} onClick={(() => {setPointAura(1000);setPointInterest(50);setBatch(50);setBranch(50)})}>Aura</button>
+                            <button className={style.sortOption} onClick={(() => {setPointAura(50);setPointInterest(1000);setBatch(50);setBranch(50)})}>Interests</button>
+                            <button className={style.sortOption} onClick={(() => {setPointAura(50);setPointInterest(50);setBatch(1000);setBranch(50)})}>Batch</button>
+                            <button className={style.sortOption} onClick={(() => {setPointAura(50);setPointInterest(50);setBatch(50);setBranch(1000)})}>Branch</button>
                         </div>
                     </div>
                 </div>
@@ -55,7 +89,7 @@ function Pending(){
             <h1 style={{color:"white",textAlign:"center",marginBlockStart:"2em",marginBlockEnd:"1.2em",fontSize:"3em"}}>Pending Requests</h1>
             <div className={style.friends}>
                 {friends.map(student => (
-                    <Student key={student.id} image={student.profile_pic} id={student.id} name={student.name} branch={student.branch} batch={student.batch} interests={student.interests}/>
+                    <Student key={student.student.id} image={student.student.profile_pic} id={student.student.id} name={student.student.name} branch={student.student.branch} batch={student.student.batch} aura={student.student.aura} interests={student.student.interests}/>
                 ))}
             </div> 
             <button className={style.home} onClick={() => navigate("/profilehome")}><img className={style.homeImage} src={home} alt="Home"></img></button>

@@ -14,15 +14,7 @@ function Profile(){
     useEffect(()=>{
             fetch(`http://localhost:${SERVER_PORT}/api/collect`,{credentials:"include"})
             .then(response => response.json())
-            .then(data => {setUser(data.user);console.log(data)})
-            .catch(err => console.log(err))
-    },[])
-    
-
-    useEffect(()=>{
-            fetch(`http://localhost:${SERVER_PORT}/api/collectInterest`,{credentials:"include"})
-            .then(response => response.json())
-            .then(data => setUserInterest(data))
+            .then(data => {setUser(data.user);setUserInterest([...data.user.interests])})
             .catch(err => console.log(err))
     },[])
 

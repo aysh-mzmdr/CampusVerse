@@ -25,8 +25,10 @@ function FriendProfile(){
                     body: JSON.stringify({friendID})
                 })
                 const data=await response.json()
-                if(response.ok)
-                    setUser(data)
+                if(response.ok){
+                    setUser(data.friend)
+                    setUserInterest([...data.friend.interests])
+                }
                 else
                     throw new Error("ERROR")
             }
@@ -35,31 +37,6 @@ function FriendProfile(){
             }
         }
         friendData()
-    },[])
-    
-    useEffect(() => {
-        const friendInterestData=async()=>{
-            try{
-                const friendID=userData.friendID
-                const response=await fetch(`http://localhost:${SERVER_PORT}/api/collectInterestFriend`,{
-                    method:"POST",
-                    credentials:"include",
-                    headers:{
-                        "Content-type":"application/json"
-                    },
-                    body: JSON.stringify({friendID})
-                })
-                const data=await response.json()
-                if(response.ok)
-                    setUserInterest(data)
-                else
-                    throw new Error("ERROR")
-            }
-            catch(e){
-                console.log(e)
-            }
-        }
-        friendInterestData()
     },[])
 
     return(
@@ -70,11 +47,13 @@ function FriendProfile(){
                     <img className={style.profilePhoto} src={user.profile_pic} alt="profile photo"></img>
                 </div>
                 <h1 className={style.head}>About</h1>
-                <div className={style.about}>
-                    <label>Name   : {user.name}</label> 
-                    <label>Aura   : {user.aura}</label> 
-                    <label>Batch  : {user.batch}</label>
-                    <label>Branch : {user.branch}</label>  
+                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                    <div className={style.about}>
+                        <label>Name   : {user.name}</label> 
+                        <label>Aura   : {user.aura}</label> 
+                        <label>Batch  : {user.batch}</label>
+                        <label>Branch : {user.branch}</label>  
+                    </div>
                 </div>
                 <h1 className={style.head}>Interests</h1>
                 <div className={style.interests}>

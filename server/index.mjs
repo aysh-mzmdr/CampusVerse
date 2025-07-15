@@ -107,8 +107,10 @@ app.post("/auth/verify",async(request,response)=>{
     }
 })
 
-app.get("/api/collect",(request,response) =>{
+app.get("/api/collect",async (request,response) =>{
     const user=request.user;
+    const interests=await pool.query("SELECT interests.id,interests.name FROM interests LEFT JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[user.id])
+    user.interests=[...interests.rows]
     response.send({user})
 })
 
@@ -116,7 +118,9 @@ app.post("/api/friendCollect",async(request,response)=>{
     const {friendID} = request.body;
     const friendQuery = await pool.query("SELECT * FROM users WHERE id=$1",[friendID])
     const friend=friendQuery.rows[0]
-    response.json(friend)
+    const interests=await pool.query("SELECT interests.id,interests.name FROM interests LEFT JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[friendID])
+    friend.interests=[...interests.rows]
+    response.send({friend})
 })
 
 app.get("/api/institutions",async (request,response) =>{
@@ -175,29 +179,18 @@ app.get("/api/interests",async(request,response)=> {
     response.json(interestsQuery.rows)
 })
 
-app.get("/api/collectInterest",async(request,response)=> {
-    const interestQuery=await pool.query("SELECT * FROM interests JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[request.user.id])
-    response.json(interestQuery.rows)
-})
-
-app.post("/api/collectInterestFriend",async(request,response)=> {
-    const {friendID} = request.body
-    const interestQuery=await pool.query("SELECT * FROM interests JOIN user_interest_table ON interests.id=user_interest_table.interest_id WHERE user_interest_table.user_id=$1",[friendID])
-    response.json(interestQuery.rows)
-})
-
 app.post("/api/batchmates",async(request,response)=>{
     const {search} = request.body
     const searchQuery=`%${search}%`
-    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$2 AND users.id NOT IN ($3,$4) AND users.name!='' AND users.id NOT IN ( SELECT sender_id FROM friends WHERE receiver_id=$3 UNION SELECT receiver_id FROM friends WHERE sender_id=$3) GROUP BY users.id",[searchQuery,request.user.institute,request.user.id,0])
+    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,aura,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id WHERE users.institute=$2 AND users.id NOT IN ($3,$4) AND users.name!='' AND users.id NOT IN ( SELECT sender_id FROM friends WHERE receiver_id=$3 UNION SELECT receiver_id FROM friends WHERE sender_id=$3) GROUP BY users.id",[searchQuery,request.user.institute,request.user.id,0])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,aura,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,aura,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)
@@ -237,15 +230,15 @@ app.post("/api/isFriend",async(request,response)=>{
 app.post("/api/friends",async(request,response)=>{
     const {search}=request.body
     const searchQuery=`%${search}%`
-    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON users.id=friends.sender_id WHERE (friends.receiver_id=$2 OR friends.sender_id=$2) AND friends.accepted=$3 GROUP BY users.id",[searchQuery,request.user.id,true])
+    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,aura,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON interests.id = user_interest_table.interest_id LEFT JOIN friends ON (users.id=friends.sender_id OR users.id=receiver_id) WHERE (friends.receiver_id=$2 OR friends.sender_id=$2) AND friends.accepted=$3 AND users.id!=$2 GROUP BY users.id",[searchQuery,request.user.id,true])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,aura,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,aura,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)
@@ -258,15 +251,15 @@ app.post("/api/friends",async(request,response)=>{
 app.post("/api/pendingFriendsReceived",async(request,response)=>{
     const {search}=request.body
     const searchQuery=`%${search}%`
-    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id = interests.id LEFT JOIN friends ON users.id=friends.sender_id WHERE friends.receiver_id=$2 AND friends.accepted=$3 GROUP BY users.id",[searchQuery,request.user.id,false])
+    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,aura,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id = interests.id LEFT JOIN friends ON users.id=friends.sender_id WHERE friends.receiver_id=$2 AND friends.accepted=$3 GROUP BY users.id",[searchQuery,request.user.id,false])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,aura,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,aura,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)
@@ -279,15 +272,15 @@ app.post("/api/pendingFriendsReceived",async(request,response)=>{
 app.post("/api/pendingFriendsSent",async(request,response)=>{
     const {search} = request.body
     const searchQuery=`%${search}%`
-    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id = interests.id LEFT JOIN friends ON users.id=friends.receiver_id WHERE friends.sender_id=$2 AND friends.accepted=$3 GROUP BY users.id",[searchQuery,request.user.id,false])
+    const batchmatesQuery=await pool.query("WITH filtered_users AS (SELECT users.id FROM users LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id=interests.id WHERE (users.name ILIKE $1 OR users.branch ILIKE $1 OR interests.name ILIKE $1)) SELECT users.id AS users_id,users.name AS users_name,users.batch,users.branch,users.profile_pic,users.cover_pic,aura,ARRAY_AGG(DISTINCT interests.id) AS interest_id,ARRAY_AGG(DISTINCT interests.name) AS interest_name FROM users JOIN filtered_users ON users.id=filtered_users.id LEFT JOIN user_interest_table ON users.id=user_interest_table.user_id LEFT JOIN interests ON user_interest_table.interest_id = interests.id LEFT JOIN friends ON users.id=friends.receiver_id WHERE friends.sender_id=$2 AND friends.accepted=$3 GROUP BY users.id",[searchQuery,request.user.id,false])
     const batchmatesmap={}
     for(const row of batchmatesQuery.rows){
         const {
-            users_id,users_name,batch,branch,profile_pic,cover_pic,interest_id,interest_name
+            users_id,users_name,batch,branch,profile_pic,cover_pic,aura,interest_id,interest_name
         }=row
 
         if(!batchmatesmap[users_id]){
-            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,interests:[]}
+            batchmatesmap[users_id]={id:users_id,name:users_name,branch,batch,profile_pic,cover_pic,aura,interests:[]}
         }
         if(interest_id && interest_name){
             batchmatesmap[users_id].interests.push(interest_name)

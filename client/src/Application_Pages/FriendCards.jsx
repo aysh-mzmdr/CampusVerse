@@ -99,6 +99,7 @@ function FriendCard(props){
             <h1 style={{textAlign:"center"}}>{props.name}</h1>
             <h2>Batch  : {props.batch}</h2>
             <h2>Branch : {props.branch}</h2>
+            <h2>Aura   : {props.aura}</h2>
             <div className={style.interests}>
                 {props.interests[0].map(interest => {
                     return(
